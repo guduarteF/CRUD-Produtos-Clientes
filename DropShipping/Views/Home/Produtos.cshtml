@@ -1,27 +1,60 @@
-﻿
+﻿@model IEnumerable<DropShipping.Models.Product>
+
+@{
+    ViewData["Title"] = "Product";
+}
+
+@* <p>
+    <a asp-action="Create">Create New</a>
+</p>
+*@
+
+<h1 class="text-white">Produtos</h1>
+
 <table class="table table-dark table-striped-columns">
+
     <thead>
         <tr>
             <th scope="col">#</th>
-            <th scope="col">Nome</th>
-            <th scope="col">Descrição</th>
-            <th scope="col">Preço</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Nome)</th>
+            <th scope="col">@Html.DisplayNameFor(model => model.Preço)</th>
             <th scope="col"></th>
             <th scope="col"></th>
         </tr>
     </thead>
+
     <tbody>
-        <tr>
+        @foreach (var item in Model)
+        {
+            <tr class="text-white">
+                <th scope="row"> </th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nome)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Descrição)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Preço)
+                </td>
+                <td>
+                    <a type="button" asp-controller="Products" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a type="button" asp-controller="Products" asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a type="button" asp-controller="Products"  asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+       @*  <tr>
             <th scope="row">1</th>
             <td>Processador</td>
             <td>Ryzen 5 5600</td>
             <td>R$ 899,99 </td>
             <td>
-                <a type="button" asp-controller="Home" asp-action="EditarProduto" class="btn btn-primary">Editar</a>
-            </td>
-            <td>
+                <a type="button" asp-controller="Home" asp-action="EditarProduto" class="btn btn-primary">Editar</a> |
                 <a type="button" asp-controller="Home" asp-action="DeletarProduto" class="btn btn-danger">Deletar</a>
             </td>
+            
 
         </tr>
         <tr>
@@ -30,9 +63,7 @@
             <td>GTX 1660</td>
             <td>R$ 580,00 </td>
             <td>
-                <a type="button" asp-controller="Home" asp-action="EditarProduto" class="btn btn-primary">Editar</a>
-            </td>
-            <td>
+                <a type="button" asp-controller="Home" asp-action="EditarProduto" class="btn btn-primary">Editar</a> |
                 <a type="button" asp-controller="Home" asp-action="DeletarProduto" class="btn btn-danger">Deletar</a>
             </td>
         </tr>
@@ -42,15 +73,15 @@
             <td>Kingston 500gb</td>
             <td>R$ 350,50 </td>
             <td>
-                <a type="button" asp-controller="Home" asp-action="EditarProduto" class="btn btn-primary">Editar</abutton></a>
-            </td>
-            <td>
+                <a type="button" asp-controller="Home" asp-action="EditarProduto" class="btn btn-primary">Editar</a> |
                 <a type="button" asp-controller="Home" asp-action="DeletarProduto" class="btn btn-danger">Deletar</a>
             </td>
-        </tr>
+        </tr> *@
         
     </tbody>
 
-    <a type="button" asp-controller="Home" asp-action="AdicionarProduto" class="btn btn-light">Adicionar Produto</a>
+    <a type="button" asp-controller="Products" asp-action="AdicionarProduto" class="btn btn-light">Adicionar Produto</a>
+
 
 </table>
+

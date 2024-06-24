@@ -1,3 +1,4 @@
+using DropShipping.Data;
 using DropShipping.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -37,6 +38,12 @@ namespace DropShipping.Controllers
         {
             return View();
         }
+
+        //[HttpGet]
+        //public IActionResult AdicionarProduto() { }
+        //{
+
+        //}
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
