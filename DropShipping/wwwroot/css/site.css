@@ -1,5 +1,6 @@
 html {
   font-size: 14px;
+  
 }
 
 @media (min-width: 768px) {
@@ -15,8 +16,10 @@ html {
 html {
   position: relative;
   min-height: 100%;
+  
 }
 
 body {
   margin-bottom: 60px;
+
 }
