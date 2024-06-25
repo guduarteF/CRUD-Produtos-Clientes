@@ -6,22 +6,24 @@
 
 <h1 class="text-white">Produtos</h1>
 
+
 <p>
     <a type="button" asp-action="Create" class="btn btn-light">Adicionar Produto</a>
 </p>
-<table class="table text-white" >
+<table class="table text-white" id="tprodutos">
     <thead>
+       
         <tr>
-            <th scope="col">
+            <th>
                 @Html.DisplayNameFor(model => model.Nome)
             </th>
-            <th scope="col">
+            <th>
                 @Html.DisplayNameFor(model => model.Descrição)
             </th>
-            <th scope="col">
+            <th>
                 @Html.DisplayNameFor(model => model.Preço) 
             </th>
-            <th></th>
+            <th> @* Empty for buttons *@</th>
         </tr>
     </thead>
     <tbody>
@@ -43,5 +45,8 @@
             </td>
         </tr>
 }
+       
+
     </tbody>
 </table>
+
