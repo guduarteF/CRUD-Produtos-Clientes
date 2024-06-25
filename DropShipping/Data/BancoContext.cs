@@ -15,6 +15,6 @@ namespace DropShipping.Data
 
         public DbSet<Product> Products { get; set; }
 
-        
+        public DbSet<UserModel> Usuarios { get; set; }
     }
 }
