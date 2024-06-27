@@ -5,7 +5,7 @@
 
 $(document).ready(function () {
     getDataTable('#tprodutos');
-    // getDataTable('#table-usuarios')
+    getDataTable('#table-usuarios')
 })
 
 function getDataTable(id) {

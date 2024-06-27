@@ -26,6 +26,26 @@ namespace DropShipping.Controllers
             return View();
         }
 
+        public IActionResult ApagarConfirmacao(int id)
+        {
+            UserModel usuario = _usuarioRepositorio.BuscarPorId(id);
+            return View("Delete",usuario);
+        }
+
+        public IActionResult Apagar(int id)
+        {
+            try
+            {
+                bool apagado = _usuarioRepositorio.Apagar(id);
+                return RedirectToAction("Index");
+            }
+            catch (Exception erro)
+            {
+                return RedirectToAction("Index");
+            }
+            
+        }
+
         [HttpPost]
         public IActionResult Criar(UserModel usuario) 
         {
