@@ -20,6 +20,7 @@
             <th scope="col"> Nome </th>
             <th scope="col"> Login </th>
             <th scope="col"> Email </th>
+            <th scope="col"> Perfil </th>
             <th scope="col"> Data de Cadastro </th>
             <th scope="col">@*VAZIA*@</th>
         </tr>
@@ -40,10 +41,14 @@
                          @Html.DisplayFor(modelItem => usuario.Email)
                     </td>
                     <td>
+                        @(usuario.Perfil == DropShipping.Enums.PerfilEnum.Admin ? "Administrador" : "Cliente")
+                        
+                    </td>
+                    <td>
                         @Html.DisplayFor(modelItem => usuario.DataCadastro)
                     </td>
                     <td>
-                        <a type="button" asp-action="Edit" asp-controller="User" asp-route-id="@usuario.Id" class="btn btn-primary">Edit</a> |
+                        <a type="button" asp-action="Editar" asp-controller="User" asp-route-id="@usuario.Id" class="btn btn-primary">Edit</a> |
                         <a type="button" asp-action="Details" asp-controller="User" asp-route-id="@usuario.Id" class="btn btn-secondary">Details</a> |
                         <a type="button" asp-action="ApagarConfirmacao" asp-controller="User" asp-route-id="@usuario.Id" class="btn btn-danger">Delete</a>
                     </td>

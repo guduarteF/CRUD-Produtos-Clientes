@@ -26,6 +26,12 @@ namespace DropShipping.Controllers
             return View();
         }
 
+        public IActionResult Editar(int id)
+        {
+            UserModel usuario = _usuarioRepositorio.BuscarPorId(id);
+            return View(usuario);
+        }
+
         public IActionResult ApagarConfirmacao(int id)
         {
             UserModel usuario = _usuarioRepositorio.BuscarPorId(id);
@@ -64,7 +70,35 @@ namespace DropShipping.Controllers
                 return RedirectToAction("Index");
             }
 
-            
+        }
+
+        [HttpPost]
+        public IActionResult Editar(UsuarioSemSenhaModel usuarioSemSenhaModel)
+        {
+            try
+            {
+                UserModel usuario = null;
+
+                if (ModelState.IsValid)
+                {
+                    usuario = new UserModel()
+                    {
+                        Id = usuarioSemSenhaModel.Id,
+                        Name = usuarioSemSenhaModel.Name,
+                        Email = usuarioSemSenhaModel.Email,
+                        Login = usuarioSemSenhaModel.Login,
+                        Perfil = usuarioSemSenhaModel?.Perfil
+                    };
+
+                    usuario = _usuarioRepositorio.Atualizar(usuario);
+                    return RedirectToAction("Index");
+                }
+                return View(usuario);
+            }
+            catch (Exception erro)
+            {
+                return RedirectToAction("Index");
+            }
         }
 
     }
