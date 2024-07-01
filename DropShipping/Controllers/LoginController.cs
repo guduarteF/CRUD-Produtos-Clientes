@@ -15,9 +15,15 @@ namespace DropShipping.Controllers
         {
             try
             {
+               
                 if(ModelState.IsValid)
                 {
-                    return RedirectToAction("Index", "Home");
+                    if (loginModel.Login == "adm" && loginModel.Senha == "123")
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+
+                    TempData["MensagemErro"] = $"Usuário e/ou senha invalido(s). Por favor , tente novamente";
                 }
 
                 return View("Index");

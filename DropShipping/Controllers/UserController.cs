@@ -43,6 +43,7 @@ namespace DropShipping.Controllers
             try
             {
                 bool apagado = _usuarioRepositorio.Apagar(id);
+                TempData["MensagemSucesso"] = "Usuário apagado com sucesso !";
                 return RedirectToAction("Index");
             }
             catch (Exception erro)
@@ -60,7 +61,7 @@ namespace DropShipping.Controllers
                 if(ModelState.IsValid)
                 {
                     usuario = _usuarioRepositorio.Adicionar(usuario);
-
+                    TempData["MensagemSucesso"] = "Usuário criado com sucesso !";
                     return RedirectToAction("Index");
                 }
                 return View(usuario);
@@ -91,6 +92,7 @@ namespace DropShipping.Controllers
                     };
 
                     usuario = _usuarioRepositorio.Atualizar(usuario);
+                    TempData["MensagemSucesso"] = "Usuário alterado com sucesso !";
                     return RedirectToAction("Index");
                 }
                 return View(usuario);
