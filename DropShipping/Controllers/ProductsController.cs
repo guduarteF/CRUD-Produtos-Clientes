@@ -60,9 +60,12 @@ namespace DropShipping.Controllers
             {
                 _context.Add(product);
                 await _context.SaveChangesAsync();
+                TempData["MensagemSucesso"] = "Produto cadastrado com sucesso";
                 return RedirectToAction(nameof(Index));
+                
             }
             return View(product);
+            
         }
 
         // GET: Products/Edit/5
@@ -111,6 +114,7 @@ namespace DropShipping.Controllers
                         throw;
                     }
                 }
+                TempData["MensagemSucesso"] = "Produto alterado com sucesso ! ";
                 return RedirectToAction(nameof(Index));
             }
             return View(product);
@@ -146,6 +150,7 @@ namespace DropShipping.Controllers
             }
 
             await _context.SaveChangesAsync();
+            TempData["MensagemSucesso"] = "Produto deletado com sucesso ! ";
             return RedirectToAction(nameof(Index));
         }
 

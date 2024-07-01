@@ -1,0 +1,78 @@
+﻿@model List<UserModel>
+
+@{
+    ViewData["Title"] = "Listagem de Usuários";
+}
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" data-bs-dismiss="alert" aria-label="Close">X</button>
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+<h1 class="text-white">Usuários</h1>
+
+<p>
+    <a type="button" asp-action="Criar" asp-controller="User" class="btn btn-light">Adicionar Novo Usuário</a>
+</p>
+
+<!doctype html>
+<html class="dark">
+<table class="table text-white" data-bs-theme="dark" id="table-usuarios">
+    <thead>
+
+        <tr>
+            
+            <th scope="col"> Nome </th>
+            <th scope="col"> Login </th>
+            <th scope="col"> Email </th>
+            <th scope="col"> Perfil </th>
+            <th scope="col"> Data de Cadastro </th>
+            <th scope="col">@*VAZIA*@</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var usuario in Model)
+            {
+                <tr class="text-white" data-bs-theme="dark">
+                    <td>
+                        @Html.DisplayFor(modelItem => usuario.Name)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => usuario.Login)
+                    </td>
+                    <td>
+                         @Html.DisplayFor(modelItem => usuario.Email)
+                    </td>
+                    <td>
+                        @(usuario.Perfil == DropShipping.Enums.PerfilEnum.Admin ? "Administrador" : "Cliente")
+                        
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => usuario.DataCadastro)
+                    </td>
+                    <td>
+                        <a type="button" asp-action="Editar" asp-controller="User" asp-route-id="@usuario.Id" class="btn btn-primary">Edit</a> |
+                        <a type="button" asp-action="Details" asp-controller="User" asp-route-id="@usuario.Id" class="btn btn-secondary">Details</a> |
+                        <a type="button" asp-action="ApagarConfirmacao" asp-controller="User" asp-route-id="@usuario.Id" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+        else
+
+        {
+            <tr class="odd"> <td valign="top" colspan="5"> Nenhum Usuário Encontrado </td></tr>
+        }
+
+
+
+    </tbody>
+</table>
+</html>
+
+
