@@ -52,13 +52,18 @@ namespace DropShipping.Repositorio
             return usuarioDB;
 
         }
+        public UserModel BuscarPorLogin(string login)
+        {
+            return _context.Usuarios.FirstOrDefault(x => x.Login.ToUpper() == login.ToUpper());
+        }
 
         public UserModel BuscarPorId(int id)
         {
             return _context.Usuarios.FirstOrDefault(x => x.Id == id);
 
         }
-        
+
+       
         public List<UserModel> BuscarTodos()
         {
             return _context.Usuarios.ToList();
