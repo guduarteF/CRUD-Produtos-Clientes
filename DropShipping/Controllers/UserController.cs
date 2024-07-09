@@ -1,10 +1,12 @@
-﻿using DropShipping.Models;
+﻿using DropShipping.Filters;
+using DropShipping.Models;
 using DropShipping.Repositorio;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DropShipping.Controllers
 {
+    [PaginaRestritaSomenteAdmin]
     public class UserController : Controller
     {
 
