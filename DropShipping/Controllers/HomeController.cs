@@ -1,10 +1,12 @@
 using DropShipping.Data;
+using DropShipping.Filters;
 using DropShipping.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace DropShipping.Controllers
 {
+    [PaginaParaUsuarioLogado]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;

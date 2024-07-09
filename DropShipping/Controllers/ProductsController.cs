@@ -7,9 +7,11 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DropShipping.Data;
 using DropShipping.Models;
+using DropShipping.Filters;
 
 namespace DropShipping.Controllers
 {
+    [PaginaParaUsuarioLogado]
     public class ProductsController : Controller
     {
         private readonly BancoContext _context;
