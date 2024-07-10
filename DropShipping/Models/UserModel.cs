@@ -32,5 +32,17 @@ namespace DropShipping.Models
             Password = Password.GerarHash();
             
         }
+
+        public void SetNovaSenha(string novaSenha)
+        {
+            Password = novaSenha.GerarHash();
+        }
+
+        public string GerarNovaSenha()
+        {
+            string novaSenha = Guid.NewGuid().ToString().Substring(0, 8);
+            Password = novaSenha.GerarHash();
+            return novaSenha;
+        }
     }
 }

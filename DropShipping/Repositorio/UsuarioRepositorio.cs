@@ -53,11 +53,35 @@ namespace DropShipping.Repositorio
             return usuarioDB;
 
         }
+
+        public UserModel AlterarSenha(AlterarSenhaModel alterarSenhaModel)
+        {
+            UserModel usuarioDB = BuscarPorId(alterarSenhaModel.Id);
+
+            if(usuarioDB == null) throw new Exception("Houve um erro na atualização da senha, usuário não encontrado!");
+            if (!usuarioDB.SenhaValida(alterarSenhaModel.SenhaAtual)) throw new Exception("Senha Atual não confere!");
+            if (usuarioDB.SenhaValida(alterarSenhaModel.NovaSenha)) throw new Exception("A senha atual não pode ser igual a senha anterior");
+
+            usuarioDB.SetNovaSenha(alterarSenhaModel.NovaSenha);
+            usuarioDB.DataAtualizacao = DateTime.Now;
+
+            _context.Usuarios.Update(usuarioDB);
+            _context.SaveChanges();
+
+            return usuarioDB;
+
+
+        }
+
         public UserModel BuscarPorLogin(string login)
         {
             return _context.Usuarios.FirstOrDefault(x => x.Login.ToUpper() == login.ToUpper());
         }
 
+        public UserModel BuscarPorEmailELogin(string email, string login)
+        {
+            return _context.Usuarios.FirstOrDefault(x => x.Email.ToUpper() == email.ToUpper() && x.Login.ToUpper() == login.ToUpper());
+        }
         public UserModel BuscarPorId(int id)
         {
             return _context.Usuarios.FirstOrDefault(x => x.Id == id);
@@ -69,5 +93,7 @@ namespace DropShipping.Repositorio
         {
             return _context.Usuarios.ToList();
         }
+
+        
     }
 }
