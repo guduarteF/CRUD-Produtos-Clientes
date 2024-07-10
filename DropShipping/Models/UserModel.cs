@@ -1,4 +1,5 @@
 ﻿using DropShipping.Enums;
+using DropShipping.Helper;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -24,6 +25,12 @@ namespace DropShipping.Models
         public bool SenhaValida(string senha)
         {
             return Password == senha;
+        }
+
+        public void SetSenhaHash()
+        {
+            Password = Password.GerarHash();
+            
         }
     }
 }
