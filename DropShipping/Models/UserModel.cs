@@ -24,7 +24,7 @@ namespace DropShipping.Models
 
         public bool SenhaValida(string senha)
         {
-            return Password == senha;
+            return Password == senha.GerarHash();
         }
 
         public void SetSenhaHash()

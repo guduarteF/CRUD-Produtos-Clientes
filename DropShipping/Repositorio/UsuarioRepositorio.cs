@@ -16,6 +16,7 @@ namespace DropShipping.Repositorio
         public UserModel Adicionar(UserModel usuario)
         {
             usuario.DataCadastro = DateTime.Now;
+            usuario.SetSenhaHash();
             _context.Usuarios.Add(usuario);
             _context.SaveChanges();
             return usuario;
