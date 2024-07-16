@@ -22,6 +22,8 @@ namespace DropShipping.Models
         public DateTime DataCadastro { get;set; }
         public DateTime? DataAtualizacao { get; set; }
 
+        public virtual List<ProductModel>? Produtos { get; set; }
+
         public bool SenhaValida(string senha)
         {
             return Password == senha.GerarHash();

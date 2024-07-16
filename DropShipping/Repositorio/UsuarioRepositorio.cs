@@ -28,10 +28,10 @@ namespace DropShipping.Repositorio
 
             if(usuarioDB == null) throw new Exception("Houve um erro na deleção do usuário");
 
-                _context.Usuarios.Remove(usuarioDB);
-                _context.SaveChanges();
+            _context.Usuarios.Remove(usuarioDB);
+            _context.SaveChanges();
 
-                return true;
+            return true;
         }
 
         public UserModel Atualizar(UserModel usuario)
