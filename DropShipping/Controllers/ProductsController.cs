@@ -18,14 +18,12 @@ namespace DropShipping.Controllers
     {
         private readonly IProductRepositorio _productRepositorio;
         private readonly ISessao _sessao;
-
-        
+      
         public ProductsController(IProductRepositorio productRepositorio, ISessao sessao)
         {
             _productRepositorio = productRepositorio;
             _sessao = sessao;
         }
-
 
         // GET: Products
         public IActionResult Index()
@@ -83,88 +81,36 @@ namespace DropShipping.Controllers
             
         }
 
-        public IActionResult Editar()
+        public IActionResult Editar(int id)
         {
-            return View("Edit");
+            ProductModel produto = _productRepositorio.BuscarPorId(id);
+            return View("Edit", produto);
         }
 
         // GET: Products/Edit/5
-        public IActionResult Edit(ProductModel product)
+        [HttpPost]
+        public IActionResult Edit(ProductModel produto)
         {
             try
             {
-                ProductModel produto = null;
-
-                if(ModelState.IsValid)
+                if (ModelState.IsValid)
                 {
-                    produto = new ProductModel()
-                    {
-                        Id = product.Id,
-                        Nome = product.Nome,
-                        Descrição = product.Descrição,
-                        Preço = product.Preço
-
-                    };
-
                     // Alteração improvisada talvez não funcione, favor estudar mais
                     UserModel usuarioLogado = _sessao.BuscarSessaoDoUsuario();
-                    product.UsuarioId = usuarioLogado.Id;
+                    produto.UsuarioId = usuarioLogado.Id;
 
-                    product = _productRepositorio.Atualizar(product);
+                    produto = _productRepositorio.Atualizar(produto);
                     TempData["MensagemSucesso"] = "Produto alterado com sucesso !";
                     return RedirectToAction("Index");
-
-                    if (product == null)
-                    {
-                        return NotFound();
-                    }
                 }
-                return View(product);
+                return View(produto);
             }
             catch (Exception ex)
             {
+                TempData["MensagemErro"] = "Não foi possível editar o produto!";
                 return RedirectToAction("Index");
-            }
-
-            
-            
+            }    
         }
-
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descrição,Preço")] ProductModel product)
-        //{
-        //    if (id != product.Id)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    if (ModelState.IsValid)
-        //    {
-        //        try
-        //        {
-        //            _context.Update(product);
-        //            await _context.SaveChangesAsync();
-        //        }
-        //        catch (DbUpdateConcurrencyException)
-        //        {
-        //            if (!ProductExists(product.Id))
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                throw;
-        //            }
-        //        }
-        //        TempData["MensagemSucesso"] = "Produto alterado com sucesso ! ";
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    return View(product);
-        //}
 
         // GET: Products/Delete/5
         public IActionResult Delete(int id)

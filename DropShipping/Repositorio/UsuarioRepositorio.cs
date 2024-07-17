@@ -1,6 +1,7 @@
 ﻿using DropShipping.Data;
 using DropShipping.Models;
 using DropShipping.Repositorio;
+using Microsoft.EntityFrameworkCore;
 
 namespace DropShipping.Repositorio
 {
@@ -91,7 +92,9 @@ namespace DropShipping.Repositorio
        
         public List<UserModel> BuscarTodos()
         {
-            return _context.Usuarios.ToList();
+            return _context.Usuarios
+                .Include(x => x.Produtos)
+                .ToList();
         }
 
         
