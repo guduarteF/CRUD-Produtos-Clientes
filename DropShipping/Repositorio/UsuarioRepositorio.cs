@@ -1,6 +1,7 @@
 ﻿using DropShipping.Data;
 using DropShipping.Models;
 using DropShipping.Repositorio;
+using Microsoft.EntityFrameworkCore;
 
 namespace DropShipping.Repositorio
 {
@@ -16,6 +17,7 @@ namespace DropShipping.Repositorio
         public UserModel Adicionar(UserModel usuario)
         {
             usuario.DataCadastro = DateTime.Now;
+            usuario.SetSenhaHash();
             _context.Usuarios.Add(usuario);
             _context.SaveChanges();
             return usuario;
@@ -27,10 +29,10 @@ namespace DropShipping.Repositorio
 
             if(usuarioDB == null) throw new Exception("Houve um erro na deleção do usuário");
 
-                _context.Usuarios.Remove(usuarioDB);
-                _context.SaveChanges();
+            _context.Usuarios.Remove(usuarioDB);
+            _context.SaveChanges();
 
-                return true;
+            return true;
         }
 
         public UserModel Atualizar(UserModel usuario)
@@ -52,11 +54,35 @@ namespace DropShipping.Repositorio
             return usuarioDB;
 
         }
+
+        public UserModel AlterarSenha(AlterarSenhaModel alterarSenhaModel)
+        {
+            UserModel usuarioDB = BuscarPorId(alterarSenhaModel.Id);
+
+            if(usuarioDB == null) throw new Exception("Houve um erro na atualização da senha, usuário não encontrado!");
+            if (!usuarioDB.SenhaValida(alterarSenhaModel.SenhaAtual)) throw new Exception("Senha Atual não confere!");
+            if (usuarioDB.SenhaValida(alterarSenhaModel.NovaSenha)) throw new Exception("A senha atual não pode ser igual a senha anterior");
+
+            usuarioDB.SetNovaSenha(alterarSenhaModel.NovaSenha);
+            usuarioDB.DataAtualizacao = DateTime.Now;
+
+            _context.Usuarios.Update(usuarioDB);
+            _context.SaveChanges();
+
+            return usuarioDB;
+
+
+        }
+
         public UserModel BuscarPorLogin(string login)
         {
             return _context.Usuarios.FirstOrDefault(x => x.Login.ToUpper() == login.ToUpper());
         }
 
+        public UserModel BuscarPorEmailELogin(string email, string login)
+        {
+            return _context.Usuarios.FirstOrDefault(x => x.Email.ToUpper() == email.ToUpper() && x.Login.ToUpper() == login.ToUpper());
+        }
         public UserModel BuscarPorId(int id)
         {
             return _context.Usuarios.FirstOrDefault(x => x.Id == id);
@@ -66,7 +92,11 @@ namespace DropShipping.Repositorio
        
         public List<UserModel> BuscarTodos()
         {
-            return _context.Usuarios.ToList();
+            return _context.Usuarios
+                .Include(x => x.Produtos)
+                .ToList();
         }
+
+        
     }
 }

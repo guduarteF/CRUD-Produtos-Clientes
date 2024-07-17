@@ -1,4 +1,5 @@
-﻿using DropShipping.Migrations;
+﻿using DropShipping.Data.Map;
+using DropShipping.Migrations;
 using DropShipping.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -13,8 +14,15 @@ namespace DropShipping.Data
 
         }
 
-        public DbSet<Product> Products { get; set; }
+        public DbSet<ProductModel> Products { get; set; }
 
         public DbSet<UserModel> Usuarios { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfiguration(new ContatoMap());
+
+            base.OnModelCreating(modelBuilder);
+        }
     }
 }

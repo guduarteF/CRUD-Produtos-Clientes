@@ -1,4 +1,5 @@
 ﻿using DropShipping.Enums;
+using DropShipping.Helper;
 using System;
 using System.ComponentModel.DataAnnotations;
 
@@ -21,9 +22,29 @@ namespace DropShipping.Models
         public DateTime DataCadastro { get;set; }
         public DateTime? DataAtualizacao { get; set; }
 
+        public virtual List<ProductModel>? Produtos { get; set; }
+
         public bool SenhaValida(string senha)
         {
-            return Password == senha;
+            return Password == senha.GerarHash();
+        }
+
+        public void SetSenhaHash()
+        {
+            Password = Password.GerarHash();
+            
+        }
+
+        public void SetNovaSenha(string novaSenha)
+        {
+            Password = novaSenha.GerarHash();
+        }
+
+        public string GerarNovaSenha()
+        {
+            string novaSenha = Guid.NewGuid().ToString().Substring(0, 8);
+            Password = novaSenha.GerarHash();
+            return novaSenha;
         }
     }
 }

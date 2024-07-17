@@ -9,6 +9,12 @@ $('.close-alert').click(function () {
 $(document).ready(function () {
     getDataTable('#tprodutos');
     getDataTable('#table-usuarios')
+
+    // Usa o # quando é ID
+    // Usa o . quando é CLASSE
+    $('.btn-total-produtos').click(function () {
+        $('#modalProdutosUsuario').modal('show');
+    });
 })
 
 function getDataTable(id) {
