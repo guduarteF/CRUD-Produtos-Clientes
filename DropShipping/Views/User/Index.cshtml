@@ -55,7 +55,7 @@
 
                         </td>
                         <td>
-                            <a href="javascript:" class="btn btn-success btn-sm btn-total-produtos">
+                            <a href="javascript:" usuario-id="@usuario.Id" class="btn btn-success btn-sm btn-total-produtos">
                                 @(usuario.Produtos != null && usuario.Produtos.Any() ? usuario.Produtos.Count() : 0)
                             </a>
                         </td>
@@ -88,31 +88,7 @@
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">X</button>
                 </div>
                 <div class="modal-body">
-                <table class="table text-dark" id="tprodutos">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">Nome</th>
-                                    <th scope="col">Descrição</th>
-                                    <th scope="col">Preço</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr class="text-dark">
-                                    <th scope="row">1</th>
-                                    <td>
-                                        A
-                                    </td>
-                                    <td>
-                                        A
-                                    </td>
-                                    <td>
-                                        A
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                    <div id="listProdutosUsuario"> </div>
                 </div>
             </div>
         </div>

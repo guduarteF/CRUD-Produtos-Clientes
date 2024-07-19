@@ -11,10 +11,12 @@ namespace DropShipping.Controllers
     {
 
         private readonly IUsuarioRepositorio _usuarioRepositorio;
+        private readonly IProductRepositorio _produtoRepositorio;
 
-        public UserController(IUsuarioRepositorio usuarioRepositorio)
+        public UserController(IUsuarioRepositorio usuarioRepositorio, IProductRepositorio produtoRepositorio)
         {
             _usuarioRepositorio = usuarioRepositorio;
+            _produtoRepositorio = produtoRepositorio;
         }
 
         public IActionResult Index()
@@ -53,6 +55,12 @@ namespace DropShipping.Controllers
                 return RedirectToAction("Index");
             }
             
+        }
+
+        public IActionResult ListarProdutosPorUsuarioId(int id)
+        {
+            List<ProductModel> produtos = _produtoRepositorio.BuscarTodos(id);
+            return PartialView("_ProdutosUsuario", produtos);
         }
 
         [HttpPost]

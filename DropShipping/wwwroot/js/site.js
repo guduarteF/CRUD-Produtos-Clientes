@@ -12,8 +12,20 @@ $(document).ready(function () {
 
     // Usa o # quando é ID
     // Usa o . quando é CLASSE
+
     $('.btn-total-produtos').click(function () {
-        $('#modalProdutosUsuario').modal('show');
+        var usuarioId = $(this).attr('usuario-id');
+
+        $.ajax({
+            type: 'GET',
+            url: '/User/ListarProdutosPorUsuarioId/' + usuarioId,
+            success: function (result) {
+                $("#listProdutosUsuario").html(result);
+                $('#modalProdutosUsuario').modal('show');
+                getDataTable('#table-produtos-usuario');
+            }
+        });
+
     });
 })
 
