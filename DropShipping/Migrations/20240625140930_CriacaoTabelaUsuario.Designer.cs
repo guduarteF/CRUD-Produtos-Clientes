@@ -4,6 +4,7 @@ using DropShipping.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DropShipping.Migrations
 {
     [DbContext(typeof(BancoContext))]
-    partial class BancoContextModelSnapshot : ModelSnapshot
+    [Migration("20240625140930_CriacaoTabelaUsuario")]
+    partial class CriacaoTabelaUsuario
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -22,7 +25,7 @@ namespace DropShipping.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("DropShipping.Models.ProductModel", b =>
+            modelBuilder.Entity("DropShipping.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -41,12 +44,7 @@ namespace DropShipping.Migrations
                     b.Property<float>("Preço")
                         .HasColumnType("real");
 
-                    b.Property<int?>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UsuarioId");
 
                     b.ToTable("Products");
                 });
@@ -87,20 +85,6 @@ namespace DropShipping.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Usuarios");
-                });
-
-            modelBuilder.Entity("DropShipping.Models.ProductModel", b =>
-                {
-                    b.HasOne("DropShipping.Models.UserModel", "Usuario")
-                        .WithMany("Produtos")
-                        .HasForeignKey("UsuarioId");
-
-                    b.Navigation("Usuario");
-                });
-
-            modelBuilder.Entity("DropShipping.Models.UserModel", b =>
-                {
-                    b.Navigation("Produtos");
                 });
 #pragma warning restore 612, 618
         }

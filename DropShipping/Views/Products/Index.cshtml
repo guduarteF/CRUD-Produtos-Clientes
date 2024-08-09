@@ -1,13 +1,31 @@
-﻿@model IEnumerable<DropShipping.Models.Product>
+﻿@model IEnumerable<DropShipping.Models.ProductModel>
 
 @{
     ViewData["Title"] = "Produtos";
 }
 
+
+@if (TempData["MensagemSucesso"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" data-bs-dismiss="alert" aria-label="Close">X</button>
+        @TempData["MensagemSucesso"]
+    </div>
+}
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert alert-danger" role="alert">
+        <button type="button" class="btn btn-danger btn-sm close-alert" data-bs-dismiss="alert" aria-label="Close">X</button>
+        @TempData["MensagemErro"]
+    </div>
+}
+
+
 <h1 class="text-white">Produtos</h1>
 
 <p>
-    <a type="button" asp-action="Create" class="btn btn-light">Adicionar Produto</a>
+    <a type="button" asp-action="Create" asp-controller="Products" class="btn btn-light">Adicionar Produto</a>
 </p>
 
 <!doctype html>
@@ -42,7 +60,7 @@
                     R$ @Html.DisplayFor(modelItem => item.Preço)
                 </td>
                 <td>
-                    <a type="button" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
+                    <a type="button" asp-action="Editar" asp-route-id="@item.Id" class="btn btn-primary">Edit</a> |
                     <a type="button" asp-action="Details" asp-route-id="@item.Id" class="btn btn-secondary">Details</a> |
                     <a type="button" asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
                 </td>

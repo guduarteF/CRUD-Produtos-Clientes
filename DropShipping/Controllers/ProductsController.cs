@@ -7,34 +7,44 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DropShipping.Data;
 using DropShipping.Models;
+using DropShipping.Filters;
+using DropShipping.Helper;
+using DropShipping.Repositorio;
 
 namespace DropShipping.Controllers
 {
+    [PaginaParaUsuarioLogado]
     public class ProductsController : Controller
     {
-        private readonly BancoContext _context;
-
-        public ProductsController(BancoContext context)
+        private readonly IProductRepositorio _productRepositorio;
+        private readonly ISessao _sessao;
+      
+        public ProductsController(IProductRepositorio productRepositorio, ISessao sessao)
         {
-            _context = context;
+            _productRepositorio = productRepositorio;
+            _sessao = sessao;
         }
 
         // GET: Products
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Products.ToListAsync());
+            UserModel usuarioLogado = _sessao.BuscarSessaoDoUsuario();
+            List<ProductModel> products = _productRepositorio.BuscarTodos(usuarioLogado.Id);
+            return View(products);
         }
 
         // GET: Products/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
+            // Alteração improvisada talvez não funcione, favor estudar mais
+
             if (id == null)
             {
                 return NotFound();
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = _productRepositorio.Detalhes(_productRepositorio.BuscarPorId(id));
+            
             if (product == null)
             {
                 return NotFound();
@@ -52,106 +62,92 @@ namespace DropShipping.Controllers
         // POST: Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Descrição,Preço")] Product product)
+        public IActionResult Create(ProductModel product)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(product);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                UserModel usuarioLogado = _sessao.BuscarSessaoDoUsuario();
+                product.UsuarioId = usuarioLogado.Id;
+
+                product = _productRepositorio.Adicionar(product);
+                TempData["MensagemSucesso"] = "Produto cadastrado com sucesso";
+                return RedirectToAction("Index");
+                
             }
+
             return View(product);
+            
+        }
+
+        public IActionResult Editar(int id)
+        {
+            ProductModel produto = _productRepositorio.BuscarPorId(id);
+            return View("Edit", produto);
         }
 
         // GET: Products/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products.FindAsync(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            return View(product);
-        }
-
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Descrição,Preço")] Product product)
+        public IActionResult Edit(ProductModel produto)
         {
-            if (id != product.Id)
+            try
             {
-                return NotFound();
-            }
+                if (ModelState.IsValid)
+                {
+                    // Alteração improvisada talvez não funcione, favor estudar mais
+                    UserModel usuarioLogado = _sessao.BuscarSessaoDoUsuario();
+                    produto.UsuarioId = usuarioLogado.Id;
 
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(product);
-                    await _context.SaveChangesAsync();
+                    produto = _productRepositorio.Atualizar(produto);
+                    TempData["MensagemSucesso"] = "Produto alterado com sucesso !";
+                    return RedirectToAction("Index");
                 }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProductExists(product.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                return View(produto);
             }
-            return View(product);
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = "Não foi possível editar o produto!";
+                return RedirectToAction("Index");
+            }    
         }
 
         // GET: Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
+
+            try
             {
-                return NotFound();
+                bool apagado = _productRepositorio.Apagar(id);
+                TempData["MensagemSucesso"] = "Produto apagado com sucesso !";
+                return RedirectToAction("Index");
+            }
+            catch (Exception erro)
+            {
+                return RedirectToAction("Index");
             }
 
-            var product = await _context.Products
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-
-            return View(product);
         }
 
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var product = await _context.Products.FindAsync(id);
-            if (product != null)
-            {
-                _context.Products.Remove(product);
-            }
+        //// POST: Products/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> DeleteConfirmed(int id)
+        //{
+        //    var product = await _context.Products.FindAsync(id);
+        //    if (product != null)
+        //    {
+        //        _context.Products.Remove(product);
+        //    }
 
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        //    await _context.SaveChangesAsync();
+        //    TempData["MensagemSucesso"] = "Produto deletado com sucesso ! ";
+        //    return RedirectToAction(nameof(Index));
+        //}
 
-        private bool ProductExists(int id)
-        {
-            return _context.Products.Any(e => e.Id == id);
-        }
+        //private bool ProductExists(int id)
+        //{
+        //    return _context.Products.Any(e => e.Id == id);
+        //}
     }
 }

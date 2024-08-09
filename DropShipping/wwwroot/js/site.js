@@ -2,9 +2,36 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
+$('.close-alert').click(function () {
+    $('.alert').hide('hide');
+});
 
 $(document).ready(function () {
-    $('#tprodutos').DataTable({
+    getDataTable('#tprodutos');
+    getDataTable('#table-usuarios')
+
+    // Usa o # quando é ID
+    // Usa o . quando é CLASSE
+
+    $('.btn-total-produtos').click(function () {
+        var usuarioId = $(this).attr('usuario-id');
+
+        $.ajax({
+            type: 'GET',
+            url: '/User/ListarProdutosPorUsuarioId/' + usuarioId,
+            success: function (result) {
+                $("#listProdutosUsuario").html(result);
+                $('#modalProdutosUsuario').modal('show');
+                getDataTable('#table-produtos-usuario');
+            }
+        });
+
+    });
+})
+
+function getDataTable(id) {
+
+    $(id).DataTable({
         "ordering": true,
         "paging": true,
         "searching": true,
@@ -32,5 +59,7 @@ $(document).ready(function () {
             }
         }
     });
-});
+}
+
+
 

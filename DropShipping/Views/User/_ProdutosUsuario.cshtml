@@ -1,0 +1,39 @@
+﻿@model List<ProductModel>
+
+<table class="table-produtos-usuario text-dark" id="tprodutos">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Descrição</th>
+            <th scope="col">Preço</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if(Model != null && Model.Any())
+        {
+            @foreach (var produto in Model)
+            {
+                <tr class="text-dark">
+                    <th scope="row">@produto.Id</th>
+                    <td>
+                        @produto.Nome
+                    </td>
+                    <td>
+                        @produto.Descrição
+                    </td>
+                    <td>
+                        R$ @produto.Preço
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr class="odd">
+                <td valign="top" colspan="4"> Nenhum produto encontrado </td>
+            </tr>
+        }
+        
+    </tbody>
+</table>
