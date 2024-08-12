@@ -2,7 +2,7 @@
 
 ## 📖  Descrição
 
-Esse é um projeto básico em C# ASP.NET MVC com EntityFramework para CRUD de produtos e clientes. Ela armazena o cadastro de clientes e produtos com banco de dados local (SQL SERVER) .
+Projeto Backend em C# ASP.NET MVC com EntityFramework para CRUD de produtos e clientes. Ela armazena o cadastro de clientes e produtos com banco de dados local (SQL SERVER) .
 
 <br/>
 
